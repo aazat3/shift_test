@@ -11,7 +11,7 @@ router = APIRouter(prefix="/bookings", tags=["bookings"])
 
 
 @router.post(
-    "/",
+    "",
     response_model=BookingRead,
     status_code=status.HTTP_201_CREATED,
 )
@@ -29,7 +29,7 @@ async def create_booking_endpoint(
     return booking
 
 
-@router.get("/", response_model=list[BookingRead])
+@router.get("", response_model=list[BookingRead])
 async def list_bookings_endpoint(
     session: AsyncSession = Depends(get_session),
 ):

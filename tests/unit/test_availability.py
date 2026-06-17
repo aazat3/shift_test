@@ -1,6 +1,7 @@
 from datetime import date, time
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from shift_test.src.crud.availability import check_room_slot_availability_by_date
 from shift_test.src.models.user import User
@@ -14,7 +15,7 @@ from shift_test.src.schemas.booking import BookingCreateWithoutUser
 
 @pytest.mark.asyncio
 async def test_slot_available(
-    session,
+    session: AsyncSession,
 ):
 
     room = Room(

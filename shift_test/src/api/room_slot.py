@@ -10,7 +10,7 @@ router = APIRouter(prefix="/room_slots", tags=["room_slots"])
 
 
 @router.post(
-    "/",
+    "",
     response_model=RoomSlotRead,
     status_code=status.HTTP_201_CREATED,
 )
@@ -28,7 +28,7 @@ async def create_room_slot_endpoint(
     return room_slot
 
 
-@router.get("/", response_model=list[RoomSlotRead])
+@router.get("", response_model=list[RoomSlotRead])
 async def list_room_slots_endpoint(
     session: AsyncSession = Depends(get_session),
 ):

@@ -12,7 +12,7 @@ from shift_test.src.schemas.availability import RoomAvailability, RoomSlotAvaila
 router = APIRouter(prefix="/availability", tags=["Availability"])
 
 # Возвращает список всех комнат с их слотами и информацией о том, доступны ли они для бронирования на указанную дату
-@router.get("/", response_model=list[RoomAvailability])
+@router.get("", response_model=list[RoomAvailability])
 async def get_available_rooms(
     date: date,
     session: AsyncSession = Depends(get_session),

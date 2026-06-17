@@ -1,5 +1,7 @@
 from datetime import date, time
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
+
 
 from shift_test.src.models.user import User
 from shift_test.src.models.room import Room
@@ -13,7 +15,7 @@ from shift_test.src.schemas.booking import BookingCreateWithoutUser
 
 @pytest.mark.asyncio
 async def test_create_booking(
-    session,
+    session: AsyncSession,
 ):
 
     user = User(

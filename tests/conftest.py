@@ -67,3 +67,33 @@ async def async_client(session):
 
 
     app.dependency_overrides.clear()
+
+
+@pytest_asyncio.fixture
+async def auth_client(
+    async_client: AsyncClient
+):
+    await async_client.post(
+        "/api/auth/register",
+        json={
+            "username": "test",
+            "password": "123456"
+        }
+    )
+
+    response = await async_client.post(
+        "/api/auth/login",
+        json={
+            "username": "test",
+            "password": "123456"
+        }
+    )
+
+    assert response.status_code == 200
+
+    assert (
+        "users_access_token"
+        in async_client.cookies
+    )
+
+    return async_client

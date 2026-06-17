@@ -10,7 +10,7 @@ from shift_test.src.schemas.room import RoomCreate, RoomRead, RoomReadWithRelati
 router = APIRouter(prefix="/rooms", tags=["rooms"])
 
 
-@router.post("/", response_model=RoomRead, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=RoomRead, status_code=status.HTTP_201_CREATED)
 async def create_room_endpoint(
     payload: RoomCreate, session: AsyncSession = Depends(get_session),
     admin=Depends(get_admin_rights),
@@ -22,7 +22,7 @@ async def create_room_endpoint(
     return await create_room(session, payload)
 
 
-@router.get("/", response_model=list[RoomRead])
+@router.get("", response_model=list[RoomRead])
 async def list_rooms_endpoint(
     session: AsyncSession = Depends(get_session), 
 ):
