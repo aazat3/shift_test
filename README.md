@@ -29,6 +29,8 @@
 ## Быстрый старт (Docker Compose)
 
 ```bash
+git clone https://github.com/aazat3/shift_test.git 
+cd shift_test  
 docker compose up -d
 docker compose exec api alembic upgrade head 
 ```
@@ -38,7 +40,7 @@ docker compose exec api alembic upgrade head
 ## Запуск тестов
 
 ```bash
-docker compose exec api pytest -v -s   
+docker compose exec api pytest -v 
 ```
 
 ## Adminer (управление базой данных)
