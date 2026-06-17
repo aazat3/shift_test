@@ -21,5 +21,6 @@ class RoomAvailability(BaseModel):
 class RoomSlotAvailabilityResponse(BaseModel):
     room_slot_id: int
     booking_date: date
+    available: bool
 
     model_config = ConfigDict(from_attributes=True)

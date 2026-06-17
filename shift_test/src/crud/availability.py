@@ -1,9 +1,11 @@
 from datetime import date
+from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
+from shift_test.src.crud.room_slot import get_room_slot_by_id
 from shift_test.src.models.booking import Booking
 from shift_test.src.models.room import Room
 from shift_test.src.models.room_slot import RoomSlot
@@ -115,20 +117,33 @@ async def get_all_availability_by_date(
     return response
 
 
-# async def check_room_slot_availability_by_date(
-#     session: AsyncSession,
-#     room_slot_id:int,
-#     booking_date:date,
-# ):
+async def check_room_slot_availability_by_date(
+    session: AsyncSession,
+    room_slot_id:int,
+    booking_date:date,
+):
 
-#     stmt = (
-#         select(Booking)
-#         .where(
-#             Booking.room_slot_id == room_slot_id,
-#             Booking.booking_date == booking_date
-#         )
-#     )
+    room_slot = await get_room_slot_by_id(
+        session,
+        room_slot_id,
+    )
+ 
+    if room_slot is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Room slot not found",
+        )
 
-#     result = await session.execute(stmt)
+    stmt = (
+        select(Booking)
+        .where(
+            Booking.room_slot_id == room_slot_id,
+            Booking.booking_date == booking_date
+        )
+    )
 
-#     return result.scalar_one_or_none()
+    result = await session.execute(stmt)
+        
+    booking = result.scalar_one_or_none()
+
+    return booking is None
