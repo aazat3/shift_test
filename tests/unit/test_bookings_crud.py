@@ -58,3 +58,5 @@ async def test_create_booking(
     assert booking.id is not None
 
     assert booking.user_id == user.id
+
+    assert booking.room_id == booking.room_slot.room_id

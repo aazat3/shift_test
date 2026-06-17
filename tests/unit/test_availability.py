@@ -19,7 +19,7 @@ async def test_slot_available(
 ):
 
     room = Room(
-        title="Test room"
+        title="Room A"
     )
 
     session.add(room)
@@ -47,7 +47,7 @@ async def test_slot_available(
 
 @pytest.mark.asyncio
 async def test_slot_not_available(
-    session,
+    session: AsyncSession,
 ):
 
     user = User(
@@ -56,7 +56,7 @@ async def test_slot_not_available(
     )
 
     room = Room(
-        title="Room"
+        title="Room A"
     )
 
     session.add_all(

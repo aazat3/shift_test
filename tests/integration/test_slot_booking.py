@@ -15,7 +15,7 @@ async def test_slot_unavailable_after_booking(
     today = str(date.today())
 
     room = Room(
-        title="Test room"
+        title="Room A"
     )
 
     session.add(room)
@@ -48,7 +48,7 @@ async def test_slot_unavailable_after_booking(
         "/api/availability/room_slots/1",
 
         params={
-            "booking_date": today
+            "booking_d  ate": today
         }
     )
 

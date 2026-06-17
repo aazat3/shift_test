@@ -19,7 +19,7 @@ DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 async_engine = create_async_engine(DATABASE_URL, echo=True)
 
 @event.listens_for(async_engine.sync_engine, "connect")
-def set_sqlite_pragma(dbapi_connection, connection_record):
+def set_sqlite_pragma(dbapi_connection):
     cursor = dbapi_connection.cursor()
     cursor.execute("PRAGMA foreign_keys=ON")
     cursor.close()
@@ -76,16 +76,16 @@ async def auth_client(
     await async_client.post(
         "/api/auth/register",
         json={
-            "username": "test",
-            "password": "123456"
+            "username": "user",
+            "password": "123"
         }
     )
 
     response = await async_client.post(
         "/api/auth/login",
         json={
-            "username": "test",
-            "password": "123456"
+            "username": "user",
+            "password": "123"
         }
     )
 

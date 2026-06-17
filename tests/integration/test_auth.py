@@ -8,8 +8,8 @@ async def test_register(
     response = await async_client.post(
         "/api/auth/register",
         json={
-            "username": "test",
-            "password": "123456"
+            "username": "user",
+            "password": "123"
         }
     )
 
@@ -17,7 +17,7 @@ async def test_register(
 
     data = response.json()
 
-    assert data["username"] == "test"
+    assert data["username"] == "user"
 
 
 
@@ -28,16 +28,16 @@ async def test_login(
     await async_client.post(
         "/api/auth/register",
         json={
-            "username": "test",
-            "password": "123456"
+            "username": "user",
+            "password": "123"
         }
     )
 
     response = await async_client.post(
         "/api/auth/login",
         json={
-            "username": "test",
-            "password": "123456"
+            "username": "user",
+            "password": "123"
         }
     )
 
