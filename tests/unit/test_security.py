@@ -5,7 +5,7 @@ from shift_test.src.core.security import (
 )
 
 
-def test_password_hashing():
+def test_password_hash():
 
     password = "secret123"
     hashed = password_hash(password)
@@ -14,6 +14,18 @@ def test_password_hashing():
     assert verify_password(
         password,
         hashed,
+    )
+
+
+def test_wrong_password():
+
+    hashed = password_hash(
+        "123456"
+    )
+
+    assert not verify_password(
+        "wrong",
+        hashed
     )
 
 
