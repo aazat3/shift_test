@@ -48,7 +48,7 @@ async def test_slot_unavailable_after_booking(
         "/api/availability/room_slots/1",
 
         params={
-            "booking_d  ate": today
+            "booking_date": today
         }
     )
 
