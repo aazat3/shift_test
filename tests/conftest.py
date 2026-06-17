@@ -1,4 +1,5 @@
 from httpx import AsyncClient, ASGITransport
+import pytest
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import (
     create_async_engine,
@@ -11,6 +12,7 @@ from sqlalchemy import event
 from shift_test.src.db.base import Base
 from shift_test.src.db.session import get_session
 from shift_test.src.main import app
+from shift_test.src.models.user import User
 
 
 
@@ -95,5 +97,45 @@ async def auth_client(
         "users_access_token"
         in async_client.cookies
     )
+
+    return async_client
+
+
+@pytest_asyncio.fixture
+async def admin_client(
+    async_client: AsyncClient,
+    session: AsyncSession
+):
+    await async_client.post(
+        "/api/auth/register",
+        json={
+            "username": "user",
+            "password": "123"
+        }
+    )
+
+    response = await async_client.post(
+        "/api/auth/login",
+        json={
+            "username": "user",
+            "password": "123"
+        }
+    )
+
+    assert response.status_code == 200
+
+    assert (
+        "users_access_token"
+        in async_client.cookies
+    )
+
+    user = await session.get(User, 1)
+    if user is None:
+        pytest.fail()
+    user.is_administrator = True
+
+
+    await session.commit()
+    await session.refresh(user)
 
     return async_client

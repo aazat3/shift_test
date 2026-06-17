@@ -57,3 +57,66 @@ async def test_slot_unavailable_after_booking(
     data=response.json()
 
     assert data["available"] is False
+
+
+
+@pytest.mark.asyncio
+async def test_admin_create_slot(
+    admin_client: AsyncClient,
+    session: AsyncSession
+):
+    room = Room(
+        title="Room A"
+    )
+
+    session.add(room)
+
+    await session.commit()
+    await session.refresh(room)
+
+    response = await admin_client.post(
+        f"/api/room_slots",
+        json={
+            "room_id":room.id,
+            "start_time":"09:00",
+            "end_time":"11:00"
+        }
+    )
+
+    assert response.status_code == 201
+
+    response = await admin_client.get(
+        f"/api/room_slots/{room.id}/room_slots"
+    )
+
+    assert response.status_code == 200
+
+    assert isinstance(
+        response.json(),
+        list
+    )
+
+
+@pytest.mark.asyncio
+async def test_user_cannot_create_slot(
+    auth_client: AsyncClient,
+    session: AsyncSession
+):
+    room = Room(
+        title="Room A"
+    )
+
+    session.add(room)
+
+    await session.commit()
+    await session.refresh(room)
+    response = await auth_client.post(
+        f"/api/room_slots",
+        json={
+            "room_id":room.id,
+            "start_time":"09:00",
+            "end_time":"11:00"
+        }
+    )
+
+    assert response.status_code == 403

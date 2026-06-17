@@ -9,12 +9,14 @@ from shift_test.src.models.room_slot import RoomSlot
 
 from shift_test.src.crud.booking import (
     create_booking,
+    delete_booking,
+    get_booking_by_id,
 )
 from shift_test.src.schemas.booking import BookingCreateWithoutUser
 
 
 @pytest.mark.asyncio
-async def test_create_booking(
+async def test_create_delete_booking(
     session: AsyncSession,
 ):
 
@@ -56,7 +58,18 @@ async def test_create_booking(
     )
 
     assert booking.id is not None
-
     assert booking.user_id == user.id
-
     assert booking.room_id == booking.room_slot.room_id
+
+    await delete_booking(
+        session,
+        booking,
+        user
+    )
+
+    result = await get_booking_by_id(
+        session,
+        booking.id
+    )
+
+    assert result is None
